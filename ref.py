@@ -1,19 +1,51 @@
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 def main():
     ans1=euler(fcn,0,2,10,0.5)
     ans2=midpoint(fcn,0,2,10,0.5)
     ans3=modifiedeuler(fcn,0,2,10,0.5)
     ans4=rungekutta(fcn,0,2,10,0.5)
-    prettyplot(ans1,"1st Order Method Approximations","Euler")
-    prettyplot(ans2,"1st Order Method Approximations","Midpoint")
-    prettyplot(ans3,"1st Order Method Approximations","Modified Euler")
-    prettyplot(ans4,"1st Order Method Approximations","Runge-Kutta")
-    errorplot(errorcalc(ans1,sol),"1st Order Method Errors","Euler")
-    errorplot(errorcalc(ans2,sol),"1st Order Method Errors","Midpoint")
-    errorplot(errorcalc(ans3,sol),"1st Order Method Errors","Modified Euler")
-    errorplot(errorcalc(ans4,sol),"1st Order Method Errors","Runge-Kutta")
+    er1=errorcalc(ans1,sol)
+    er2=errorcalc(ans2,sol)
+    er3=errorcalc(ans3,sol)
+    er4=errorcalc(ans4,sol)
+    # Solution Plotting
+    plt.figure("1st Order Method Approximations")
+    plt.title("1st Order Method Approximations")
+    plt.xlabel("t")
+    plt.ylabel("y")
+    plt.plot(ans1[0],ans1[1],label="Euler")
+    plt.plot(ans2[0],ans2[1],label="Midpoint")
+    plt.plot(ans3[0],ans3[1],label="Modified Euler")
+    plt.plot(ans4[0],ans4[1],label="Runge-Kutta")
+    plt.legend()
+    # Error Plotting
+    plt.figure("1st Order Method Errors")
+    plt.title("1st Order Method Errors")
+    plt.xlabel("t")
+    plt.ylabel("Error")
+    plt.semilogy(er1[0],er1[1],label="Euler")
+    plt.semilogy(er2[0],er2[1],label="Midpoint")
+    plt.semilogy(er3[0],er3[1],label="Modified Euler")
+    plt.semilogy(er4[0],er4[1],label="Runge-Kutta")
+    plt.legend()
+    # Stability Plotting
+    plt.figure("Stability for different methods")
+    plt.title("Stability for different methods")
+    plt.xlabel("Re(hk)")
+    plt.ylabel("Im(hk)")
+    x=np.linspace(-2,2,1000)
+    y=np.linspace(-2,2,1000)
+    X,Y=np.meshgrid(x,y)
+    eulerF=(X+1)**2+Y**2-1
+    midpointF=X+(X**2-Y**2)/2
+    plt.contour(X,Y,eulerF,[0])
+    plt.contour(X,Y,midpointF,[0])
+    plt.contour
+    plt.legend()
+
     plt.show()
 
 # Solves for y'=f(t,y)
@@ -96,24 +128,8 @@ def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
         
     return (t,x[:,N+1])
     
-def prettyplot(tw,f,l):
-    plt.figure(f)
-    plt.title(f)
-    plt.xlabel("t")
-    plt.ylabel("y")
-    plt.plot(tw[0],tw[1],label=l)
-    plt.legend()
-    return()
 def errorcalc(tw,y):
     return([tw[0],[abs(tw[1][i]-y(tw[0][i])) for i in range(len(tw[0]))]])
-def errorplot(te,f,l):
-    plt.figure(f)
-    plt.title(f)
-    plt.xlabel("t")
-    plt.ylabel("Error")
-    plt.semilogy(te[0],te[1],label=l)
-    plt.legend()
-    return()
 
 def fcn(t,y):return(y-t**2+1)
 def sol(t):return(t**2+2*t+1-0.5*math.exp(t))
