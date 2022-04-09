@@ -47,7 +47,26 @@ def rungekutta(f,a,b,N,alpha):
         w[i]=w[i-1]+(1/6)*(k1+2*k2+2*k3+k4)
     return(t,w)
 #     def newmmark
-#     def leapfrog
+
+
+#Solves for x"=f(x)
+# with Initial conditions x(a) = alpha and x'(a) = beta, a < t < b
+def leapfrog(f,a,b,N,alpha,beta,k):
+    h = (b-a)/N
+    
+    t = np.linspace(a, k*b,k*N + 1)
+    x = np.empty(k*N+1)
+    v = np.empty(k*N+1)
+    
+    x[0] = alpha
+    v[0] = beta
+    
+    for i in range(1, k*N+1):
+        x[i] = x[i-1] + v[i-1]*h + 0.5*f(x[i-1])*h**2
+        v[i] = v[i-1] + 0.5*(f(x[i-1]) + f(x[i]))*h
+        
+    return (t,x)
+
 # def prettyplot()
 # def errorplot()
 def fcn(t,y):return(y-t**2+1)
