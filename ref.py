@@ -2,15 +2,19 @@ import math
 import matplotlib.pyplot as plt
 
 def main():
-    print("Euler")
-    print(euler(fcn,0,2,10,0.5))
-    print("Midpoint")
-    print(midpoint(fcn,0,2,10,0.5))
-    print("Modified Euler")
-    print(modifiedeuler(fcn,0,2,10,0.5))
-    print("Runge Kutta")
-    print(rungekutta(fcn,0,2,10,0.5))
-
+    ans1=euler(fcn,0,2,10,0.5)
+    ans2=midpoint(fcn,0,2,10,0.5)
+    ans3=modifiedeuler(fcn,0,2,10,0.5)
+    ans4=rungekutta(fcn,0,2,10,0.5)
+    prettyplot(ans1,"1st Order Method Approximations","Euler")
+    prettyplot(ans2,"1st Order Method Approximations","Midpoint")
+    prettyplot(ans3,"1st Order Method Approximations","Modified Euler")
+    prettyplot(ans4,"1st Order Method Approximations","Runge-Kutta")
+    errorplot(errorcalc(ans1,sol),"1st Order Method Errors","Euler")
+    errorplot(errorcalc(ans2,sol),"1st Order Method Errors","Midpoint")
+    errorplot(errorcalc(ans3,sol),"1st Order Method Errors","Modified Euler")
+    errorplot(errorcalc(ans4,sol),"1st Order Method Errors","Runge-Kutta")
+    plt.show()
 
 # Solves for y'=f(t,y)
 # a < t < b ; t(0)=alpha
@@ -46,8 +50,6 @@ def rungekutta(f,a,b,N,alpha):
         k4=h*f(t[i],w[i-1]+k3)
         w[i]=w[i-1]+(1/6)*(k1+2*k2+2*k3+k4)
     return(t,w)
-
-
 
 #Solves for x"=f(x)
 # with Initial conditions x(a) = alpha and x'(a) = beta, a < t < b
@@ -93,9 +95,28 @@ def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
         v[:,i+1] = v[:,i]+(1-gamma)*h*a[:,i]+gamma*h*a[:,i+1]
         
     return (t,x[:,N+1])
+    
+def prettyplot(tw,f,l):
+    plt.figure(f)
+    plt.title(f)
+    plt.xlabel("t")
+    plt.ylabel("y")
+    plt.plot(tw[0],tw[1],label=l)
+    plt.legend()
+    return()
+def errorcalc(tw,y):
+    return([tw[0],[abs(tw[1][i]-y(tw[0][i])) for i in range(len(tw[0]))]])
+def errorplot(te,f,l):
+    plt.figure(f)
+    plt.title(f)
+    plt.xlabel("t")
+    plt.ylabel("Error")
+    plt.semilogy(te[0],te[1],label=l)
+    plt.legend()
+    return()
 
-# def prettyplot()
-# def errorplot()
 def fcn(t,y):return(y-t**2+1)
+def sol(t):return(t**2+2*t+1-0.5*math.exp(t))
+
 if __name__ == '__main__':
     main()
