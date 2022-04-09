@@ -85,6 +85,7 @@ def rungekutta(f,a,b,N,alpha):
 
 #Solves for x"=f(x)
 # with Initial conditions x(a) = alpha and x'(a) = beta, a < t < b
+# k is the number of periods
 def leapfrog(f,a,b,N,alpha,beta,k):
     h = (b-a)/N
     
