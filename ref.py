@@ -46,7 +46,7 @@ def rungekutta(f,a,b,N,alpha):
         k4=h*f(t[i],w[i-1]+k3)
         w[i]=w[i-1]+(1/6)*(k1+2*k2+2*k3+k4)
     return(t,w)
-#     def newmmark
+
 
 
 #Solves for x"=f(x)
@@ -66,6 +66,33 @@ def leapfrog(f,a,b,N,alpha,beta,k):
         v[i] = v[i-1] + 0.5*(f(x[i-1]) + f(x[i]))*h
         
     return (t,x)
+
+#solves for Mx" + Cx' +Kx = f(t)
+def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
+    # M is the mass matrix, C is the damping matrix, K is the stiffness matrix
+    #x_i and v_i are initial condition vectors
+    # f is a column vector
+    h = (t_f - t_i)/N
+    
+    t = np.linspace(t_i, t_f,N + 1)
+    x = np.empty(len(x_i),N+1)
+    v = np.empty(len(v_i,N+1))
+    a = np.empty(len(v_i,N+1))
+    
+    x[:,0] = x_i
+    v[:,0] = v_i
+    a[:,0] = np.linalg.inv(M)*(f[:,0] - C*v[:,0] - K*x[:,0])
+    
+    A = M/(beta*h**2) + gamma*C/(beta*h) + K
+    invA = np.linalg.inv(A)
+    
+    for i in range(0,N):
+        B = f[:,i+1] + M * (x[:,i]/(beta*h**2) + v[:,i]/(beta*h) + (1/(2*beta) - 1)*a[:,i]) + C*(gamma*x[:,i]/(beta*h)-v[:,i]*(1-gamma/beta)-h*a[:,i]*(1-gamma/(2*beta)))
+        x[:,i+1] = invA * B
+        a[:,i+1] = (x[:,i+1]-x[:,i])/(beta*h**2) - v[:,i]/(beta*h)-(1/(2*beta) - 1)*a[:,i]
+        v[:,i+1] = v[:,i]+(1-gamma)*h*a[:,i]+gamma*h*a[:,i+1]
+        
+    return (t,x[:,N+1])
 
 # def prettyplot()
 # def errorplot()
