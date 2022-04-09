@@ -104,13 +104,14 @@ def leapfrog(f,a,b,N,alpha,beta,k):
 
 # Solving for Mx" + Cx' + Kx = f(t)
 # with x(a) = x0, y(a) = y0
-def euler_2nd(f,g,a,b,N,x0,y0):
+def euler_2nd(F,G,a,b,N,x0,y0):
+    # substituting x' = y = F(t,x,y) and y' = (f(t) - Cy - Kx)/M = G(t,x,y)
     h=(b-a)/N
     x=[x0 for i in range(N+1)]
     y=[y0 for i in range(N+1)]
     for i in range(1,N+1):
-        x[i] = x[i-1]+h*f(t[i-1],x[i-1],y[i-1])
-        y[i] = y[i-1]+h*g(t[i-1],x[i-1],y[i-1])
+        x[i] = x[i-1]+h*F(t[i-1],x[i-1],y[i-1])
+        y[i] = y[i-1]+h*G(t[i-1],x[i-1],y[i-1])
     return(t,x)
 
 #solves for Mx" + Cx' +Kx = f(t)
