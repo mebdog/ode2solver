@@ -101,6 +101,18 @@ def leapfrog(f,a,b,N,alpha,beta,k):
         
     return (t,x)
 
+
+# Solving for Mx" + Cx' + Kx = f(t)
+# with x(a) = x0, y(a) = y0
+def euler_2nd(f,g,a,b,N,x0,y0):
+    h=(b-a)/N
+    x=[x0 for i in range(N+1)]
+    y=[y0 for i in range(N+1)]
+    for i in range(1,N+1):
+        x[i] = x[i-1]+h*f(t[i-1],x[i-1],y[i-1])
+        y[i] = y[i-1]+h*g(t[i-1],x[i-1],y[i-1])
+    return(t,x)
+
 #solves for Mx" + Cx' +Kx = f(t)
 def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
     # M is the mass matrix, C is the damping matrix, K is the stiffness matrix
