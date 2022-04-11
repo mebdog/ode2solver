@@ -52,28 +52,28 @@ def main():
 # a < t < b ; t(0)=alpha
 def euler(f,a,b,N,alpha):
     h=(b-a)/N
-    t=[round(a+h*i,3) for i in range(N+1)]
+    t=[a+h*i for i in range(N+1)]
     w=[alpha for i in range(N+1)]
     for i in range(1,N+1):
         w[i] = w[i-1]+h*f(t[i-1],w[i-1])
     return(t,w)
 def midpoint(f,a,b,N,alpha):
     h=(b-a)/N
-    t=[round(a+h*i,3) for i in range(N+1)]
+    t=[a+h*i for i in range(N+1)]
     w=[alpha for i in range(N+1)]
     for i in range(1,N+1):
         w[i] = w[i-1]+h*f(t[i-1]+h/2,w[i-1]+(h/2)*f(t[i-1],w[i-1]))
     return(t,w)
 def modifiedeuler(f,a,b,N,alpha):
     h=(b-a)/N
-    t=[round(a+h*i,3) for i in range(N+1)]
+    t=[a+h*i for i in range(N+1)]
     w=[alpha for i in range(N+1)]
     for i in range(1,N+1):
         w[i] = w[i-1]+(h/2)*(f(t[i-1],w[i-1])+f(t[i],w[i-1]+h*f(t[i-1],w[i-1])))
     return(t,w)
 def rungekutta(f,a,b,N,alpha):
     h=(b-a)/N
-    t=[round(a+h*i,3) for i in range(N+1)]
+    t=[a+h*i for i in range(N+1)]
     w=[alpha for i in range(N+1)]
     for i in range(1,N+1):
         k1=h*f(t[i-1],w[i-1])
@@ -83,25 +83,17 @@ def rungekutta(f,a,b,N,alpha):
         w[i]=w[i-1]+(1/6)*(k1+2*k2+2*k3+k4)
     return(t,w)
 
-#Solves for x"=f(x)
+# Solves for x"=f(x)
 # with Initial conditions x(a) = alpha and x'(a) = beta, a < t < b
-# k is the number of periods
-def leapfrog(f,a,b,N,alpha,beta,k):
-    h = (b-a)/N
-    
-    t = np.linspace(a, k*b,k*N + 1)
-    x = np.empty(k*N+1)
-    v = np.empty(k*N+1)
-    
-    x[0] = alpha
-    v[0] = beta
-    
-    for i in range(1, k*N+1):
-        x[i] = x[i-1] + v[i-1]*h + 0.5*f(x[i-1])*h**2
-        v[i] = v[i-1] + 0.5*(f(x[i-1]) + f(x[i]))*h
-        
-    return (t,x)
-
+def leapfrog(f,a,b,N,alpha,beta):
+    h=(b-a)/N
+    t=[a+h*i for i in range(N+1)]
+    w=[alpha for i in range(N+1)]
+    v=[beta for i in range(N+1)]
+    for i in range(1,N+1):
+        w[i] = w[i-1]+h*v[i-1]+(1/2)*f(w[i-1])*h**2
+        v[i] = v[i-1]+(1/2)*(f(w[i-1])+f(w[i]))*h
+    return(t,w)
 
 # Solving for Mx" + Cx' + Kx = f(t)
 # with x(a) = x0, y(a) = y0
@@ -147,6 +139,8 @@ def errorcalc(tw,y):
 
 def fcn(t,y):return(y-t**2+1)
 def sol(t):return(t**2+2*t+1-0.5*math.exp(t))
+def fcn2(y):return(-y)
+def sol2(t):return(math.sin(t))
 
 if __name__ == '__main__':
     main()
