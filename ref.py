@@ -137,6 +137,12 @@ def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
 def errorcalc(tw,y):
     return([tw[0],[abs(tw[1][i]-y(tw[0][i])) for i in range(len(tw[0]))]])
 
+def funceval(fcn,a,b,N):
+    h=(b-a)/N
+    t=[a+h*i for i in range(N+1)]
+    w=[fcn(t[i]) for i in range(N+1)]
+    return(t,w)
+
 def fcn(t,y):return(y-t**2+1)
 def sol(t):return(t**2+2*t+1-0.5*math.exp(t))
 def fcn2(y):return(-y)
