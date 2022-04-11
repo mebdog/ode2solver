@@ -107,6 +107,61 @@ def euler_2nd(F,G,a,b,N,x0,y0):
         y[i] = y[i-1]+h*G(t[i-1],x[i-1],y[i-1])
     return(t,x)
 
+
+# Modified euler's method
+def modifiedeulers(a,b,N,alpha,fty,sol):
+    h = (b-a)/N
+    t = []
+    w = []
+    i = 1
+    t.append(a)
+    w.append(alpha)
+    while(i<=N):
+        t.append(a + i*h)
+        w.append(w[i-1] + (h/2)*(fty(t[i],w[i-1])+fty(t[i-1],w[i-1]+h*fty(t[i-1],w[i-1]))))
+        i = i + 1
+    return(t,w)
+
+# Midpoint method / runge kutta order two
+def rk2(a,b,N,alpha,fty,sol):
+    h = (b-a)/N
+    t = []
+    w = []
+    i = 1
+    t.append(a)
+    w.append(alpha)
+    while(i<=N):
+        t.append(a + i*h)
+        w.append(w[i-1] + h*fty(t[i-1]+h/2,w[i-1]+(h/2)*fty(t[i-1],w[i-1])))
+        i = i + 1
+    return(t,w)
+
+# Runge kutta fourth order approximation for a system
+def rk4sys(a,b,N,alpham,fjtu):
+    m = len(alpham)
+    h = (b-a)/N
+    t = a
+    k1,k2,k3,k4,wd,w = [],[],[],[],[],[],[],[]
+    for i in range(m):
+        k1.append(0);k2.append(0);k3.append(0);k4.append(0);wd.append(0);w.append(alpham[i])
+    ti=[a]
+    xi=[w]
+    for i in range(1,N+1):
+        for j in range(m): wd[j] = w[j]
+        for j in range(m): k1[j] = h*fjtu[j](t,*wd)
+        for j in range(m): wd[j] = w[j] + k1[j]/2
+        for j in range(m): k2[j] = h*fjtu[j](t+h/2,*wd)
+        for j in range(m): wd[j] = w[j] + k2[j]/2
+        for j in range(m): k3[j] = h*fjtu[j](t+h/2,*wd)
+        for j in range(m): wd[j] = w[j] + k3[j]
+        for j in range(m): k4[j] = h*fjtu[j](t+h,*wd)
+        for j in range(m): w[j] = w[j]+(k1[j]+2*k2[j]+2*k3[j]+k4[j])/6
+        t = a + round(i*h,3)
+        ti.append(t)
+        xi.append(w)
+    return(ti,xi)
+
+
 #solves for Mx" + Cx' +Kx = f(t)
 def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
     # M is the mass matrix, C is the damping matrix, K is the stiffness matrix
