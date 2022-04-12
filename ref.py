@@ -3,13 +3,92 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def main():
-    app1 = rk4sys(1,3,10,[4,3],[u1,u2])
-    exa1 = funceval(u1sol, 1, 3, 10)
-    exa2 = funceval(u2sol, 1, 3, 10)
-    plt.plot(app1[0],app1[1],label="apprx")
-    plt.plot(exa1[0],exa1[1],'r+',label="exact 1")
-    plt.plot(exa2[0],exa2[1],'bo',label="exact 2")
-    plt.legend()
+    # All stable simple harmonic motion
+    exa1 = funceval(u1sol, 0, 5, 1000)
+    app0 = leapfrog(xpp,0,5,1000,1,0)
+    app1 = rk4sys(0,5,1000,[1,0],[u1,u2])
+    app2 = euler_2nd(u1,u2,0,5,1000,1,0)
+    app3 = modifiedeuler_2nd(u1,u2,0,5,1000,1,0)
+    app4 = midpoint_2nd(u1,u2,0,5,1000,1,0)
+    plt.figure("All Stable - SHM")
+    plt.title("Simple Harmonic Motion; N=1000")
+    plt.xlabel('t')
+    plt.ylabel('x')
+    plt.plot(app0[0],app0[1],'g',label="Leapfrog")
+    plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
+    plt.plot(app2[0],app2[1],color="orange",label="Euler")
+    plt.plot(app3[0],app3[1],'r',label="Modified Euler")
+    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(exa1[0],exa1[1],label="Exact Solution")
+    plt.legend(loc='lower left')
+    plt.figure("All Stable Error - SHM")
+    plt.title("Simple Harmonic Motion Error; N=1000")
+    plt.xlabel('t')
+    plt.ylabel('Error')
+    plt.semilogy(app0[0],errorcalc(app0[1],exa1[1]),'g',label="Leapfrog")
+    plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
+    plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
+    plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
+    plt.legend(loc='lower left')
+    # Some stable simple harmonic motion
+    exa1 = funceval(u1sol, 0, 5, 100)
+    app0 = leapfrog(xpp,0,5,100,1,0)
+    app1 = rk4sys(0,5,100,[1,0],[u1,u2])
+    app2 = euler_2nd(u1,u2,0,5,100,1,0)
+    app3 = modifiedeuler_2nd(u1,u2,0,5,100,1,0)
+    app4 = midpoint_2nd(u1,u2,0,5,100,1,0)
+    plt.figure("Some Stable - SHM")
+    plt.title("Simple Harmonic Motion; N=100")
+    plt.xlabel('t')
+    plt.ylabel('x')
+    plt.plot(app0[0],app0[1],'g',label="Leapfrog")
+    plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
+    plt.plot(app2[0],app2[1],color="orange",label="Euler")
+    plt.plot(app3[0],app3[1],'r',label="Modified Euler")
+    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(exa1[0],exa1[1],label="Exact Solution")
+    plt.legend(loc='lower left')
+    plt.figure("Some Stable Error - SHM")
+    plt.title("Simple Harmonic Motion Error; N=100")
+    plt.xlabel('t')
+    plt.ylabel('Error')
+    plt.semilogy(app0[0],errorcalc(app0[1],exa1[1]),'g',label="Leapfrog")
+    plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
+    plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
+    plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
+    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.legend(loc='lower left')
+    # All unstable
+    exa1 = funceval(u1sol, 0, 5, 10)
+    app0 = leapfrog(xpp,0,5,10,1,0)
+    app1 = rk4sys(0,5,10,[1,0],[u1,u2])
+    app2 = euler_2nd(u1,u2,0,5,10,1,0)
+    app3 = modifiedeuler_2nd(u1,u2,0,5,10,1,0)
+    app4 = midpoint_2nd(u1,u2,0,5,10,1,0)
+    plt.figure("All Unstable - SHM")
+    plt.title("Simple Harmonic Motion; N=10")
+    plt.xlabel('t')
+    plt.ylabel('x')
+    plt.plot(app0[0],app0[1],'g',label="Leapfrog")
+    plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
+    plt.plot(app2[0],app2[1],color="orange",label="Euler")
+    plt.plot(app3[0],app3[1],'r',label="Modified Euler")
+    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(exa1[0],exa1[1],label="Exact Solution")
+    plt.legend(loc='lower left')
+    plt.figure("All Unstable Error - SHM")
+    plt.title("Simple Harmonic Motion Error; N=10")
+    plt.xlabel('t')
+    plt.ylabel('Error')
+    plt.semilogy(app0[0],errorcalc(app0[1],exa1[1]),'g',label="Leapfrog")
+    plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
+    plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
+    plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
+    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.legend(loc='lower left')
     plt.show()
     return()
     
@@ -110,6 +189,7 @@ def leapfrog(f,a,b,N,alpha,beta):
 def euler_2nd(F,G,a,b,N,x0,y0):
     # substituting x' = y = F(t,x,y) and y' = (f(t) - Cy - Kx)/M = G(t,x,y)
     h=(b-a)/N
+    t=[a+h*i for i in range(N+1)]
     x=[x0 for i in range(N+1)]
     y=[y0 for i in range(N+1)]
     for i in range(1,N+1):
@@ -117,34 +197,25 @@ def euler_2nd(F,G,a,b,N,x0,y0):
         y[i] = y[i-1]+h*G(t[i-1],x[i-1],y[i-1])
     return(t,x)
 
+def modifiedeuler_2nd(F,G,a,b,N,x0,y0):
+    h=(b-a)/N
+    t=[a+h*i for i in range(N+1)]
+    x=[x0 for i in range(N+1)]
+    y=[y0 for i in range(N+1)]
+    for i in range(1,N+1):
+        x[i] = x[i-1]+(h/2)*(F(t[i-1],x[i-1],y[i-1])+F(t[i],x[i-1]+h*F(t[i-1],x[i-1],y[i-1]),y[i-1]))
+        y[i] = y[i-1]+(h/2)*(G(t[i-1],x[i-1],y[i-1])+G(t[i],x[i-1],y[i-1])+h*G(t[i-1],x[i-1],y[i-1]))
+    return(t,x)
 
-# Modified euler's method
-def modifiedeulers(a,b,N,alpha,fty,sol):
-    h = (b-a)/N
-    t = []
-    w = []
-    i = 1
-    t.append(a)
-    w.append(alpha)
-    while(i<=N):
-        t.append(a + i*h)
-        w.append(w[i-1] + (h/2)*(fty(t[i],w[i-1])+fty(t[i-1],w[i-1]+h*fty(t[i-1],w[i-1]))))
-        i = i + 1
-    return(t,w)
-
-# Midpoint method / runge kutta order two
-def rk2(a,b,N,alpha,fty,sol):
-    h = (b-a)/N
-    t = []
-    w = []
-    i = 1
-    t.append(a)
-    w.append(alpha)
-    while(i<=N):
-        t.append(a + i*h)
-        w.append(w[i-1] + h*fty(t[i-1]+h/2,w[i-1]+(h/2)*fty(t[i-1],w[i-1])))
-        i = i + 1
-    return(t,w)
+def midpoint_2nd(F,G,a,b,N,x0,y0):
+    h=(b-a)/N
+    t=[a+h*i for i in range(N+1)]
+    x=[x0 for i in range(N+1)]
+    y=[y0 for i in range(N+1)]
+    for i in range(1,N+1):
+        x[i] = x[i-1]+h*F(t[i-1]+h/2,x[i-1]+(h/2)*F(t[i-1],x[i-1],y[i-1]),y[i-1])
+        y[i] = y[i-1]+h*G(t[i-1]+h/2,x[i-1],y[i-1]+(h/2)*G(t[i-1],x[i-1],y[i-1]))
+    return(t,x)
 
 # Runge kutta fourth order approximation for a system
 def rk4sys(a,b,N,alpham,fjtu):
@@ -199,8 +270,8 @@ def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
         
     return (t,x[:,N+1])
     
-def errorcalc(tw,y):
-    return([tw[0],[abs(tw[1][i]-y(tw[0][i])) for i in range(len(tw[0]))]])
+def errorcalc(w,y):
+    return([abs(w[i]-y[i]) for i in range(len(w))])
 
 def funceval(fcn,a,b,N):
     h=(b-a)/N
@@ -208,15 +279,14 @@ def funceval(fcn,a,b,N):
     w=[fcn(t[i]) for i in range(N+1)]
     return(t,w)
 
-def fcn(t,y):return(y-t**2+1)
-def sol(t):return(t**2+2*t+1-0.5*math.exp(t))
-def fcn2(y):return(-y)
-def sol2(t):return(math.sin(t))
-
+# This is the system for Simple Harmonic Motion
 def u1(t,y1,y2):return(y2)
-def u2(t,y1,y2):return((-1/t)*y2+(4/t**2)*y1-3/t)
-def u1sol(t):return(2*t**2+t+t**-2)
-def u2sol(t):return(4*t+1-2*t**-3)
+def u2(t,y1,y2):return(-10*y1)
+def u1sol(t):return(math.cos(math.sqrt(10)*t))
+def u2sol(t):return(-math.sqrt(10)*math.sin(math.sqrt(10)*t))
+
+# This is the equation governing Simple Harmonic Motion
+def xpp(x):return(-10*x)
 
 if __name__ == '__main__':
     main()
