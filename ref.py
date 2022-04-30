@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def main():
+    # Resonance Example
+    app4 = newmark(.5, .1, 5, yeehaw, 0 , 5, 1000, 1, 0)
+    return
     # Simple Harmonic Motion
     # All stable simple harmonic motion
     exa1 = funceval(u1sol, 0, 5, 1000)
@@ -10,16 +13,16 @@ def main():
     app1 = rk4sys(0,5,1000,[1,0],[u1,u2])
     app2 = euler_2nd(u1,u2,0,5,1000,1,0)
     app3 = modifiedeuler_2nd(u1,u2,0,5,1000,1,0)
-    app4 = midpoint_2nd(u1,u2,0,5,1000,1,0)
+    app4 = newmark(.5, 0, 5, dummyzero, 0 , 5, 1000, 1, 0)
     plt.figure("All Stable - SHM")
     plt.title("Simple Harmonic Motion; N=1000")
     plt.xlabel('t')
     plt.ylabel('x')
-    plt.plot(app0[0],app0[1],'g',label="Leapfrog")
-    plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
+    plt.plot(app0[0],app0[1],color='green',label="Leapfrog")
+    plt.plot(app1[0],np.transpose(app1[1])[0],color='blue',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
-    plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app3[0],app3[1],color='red',label="Modified Euler")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("All Stable Error - SHM")
@@ -30,7 +33,7 @@ def main():
     plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
     plt.legend(loc='lower left')
     # Some stable simple harmonic motion
     exa1 = funceval(u1sol, 0, 5, 100)
@@ -38,7 +41,7 @@ def main():
     app1 = rk4sys(0,5,100,[1,0],[u1,u2])
     app2 = euler_2nd(u1,u2,0,5,100,1,0)
     app3 = modifiedeuler_2nd(u1,u2,0,5,100,1,0)
-    app4 = midpoint_2nd(u1,u2,0,5,100,1,0)
+    app4 = newmark(.5, 0, 5, dummyzero, 0 , 5, 100, 1, 0)
     plt.figure("Some Stable - SHM")
     plt.title("Simple Harmonic Motion; N=100")
     plt.xlabel('t')
@@ -47,7 +50,7 @@ def main():
     plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
     plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("Some Stable Error - SHM")
@@ -58,8 +61,7 @@ def main():
     plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
-    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
     plt.legend(loc='lower left')
     # All unstable simple harmonic motion
     exa1 = funceval(u1sol, 0, 5, 10)
@@ -67,7 +69,7 @@ def main():
     app1 = rk4sys(0,5,10,[1,0],[u1,u2])
     app2 = euler_2nd(u1,u2,0,5,10,1,0)
     app3 = modifiedeuler_2nd(u1,u2,0,5,10,1,0)
-    app4 = midpoint_2nd(u1,u2,0,5,10,1,0)
+    app4 = newmark(.5, 0, 5, dummyzero, 0 , 5, 10, 1, 0)
     plt.figure("All Unstable - SHM")
     plt.title("Simple Harmonic Motion; N=10")
     plt.xlabel('t')
@@ -76,7 +78,7 @@ def main():
     plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
     plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("All Unstable Error - SHM")
@@ -87,8 +89,7 @@ def main():
     plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
-    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
     plt.legend(loc='lower left')
     # Damped Harmonic Motion
     # All stable damped harmonic motion
@@ -96,7 +97,8 @@ def main():
     app1 = rk4sys(0,5,1000,[1,0],[u3,u4])
     app2 = euler_2nd(u3,u4,0,5,1000,1,0)
     app3 = modifiedeuler_2nd(u3,u4,0,5,1000,1,0)
-    app4 = midpoint_2nd(u3,u4,0,5,1000,1,0)
+    app4 = newmark(.5, .1, 5, dummyzero, 0 , 5, 1000, 1, 0)
+    app5 = newmark(.5, .1, 5, dummyzero, 0 , 5, 1000, 1, 0, 1/6)
     plt.figure("All Stable - DHM")
     plt.title("Damped Harmonic Motion; N=1000")
     plt.xlabel('t')
@@ -104,7 +106,8 @@ def main():
     plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
     plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
+    plt.plot(app5[0],app5[1],color='green',label="Newmark - Linear")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("All Stable Error - DHM")
@@ -114,14 +117,16 @@ def main():
     plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
+    plt.semilogy(app5[0],errorcalc(app5[1],exa1[1]),color='green',label="Newmark - Linear")
     plt.legend(loc='lower left')
     # Some stable damped harmonic motion
     exa1 = funceval(u3sol, 0, 5, 100)
     app1 = rk4sys(0,5,100,[1,0],[u3,u4])
     app2 = euler_2nd(u3,u4,0,5,100,1,0)
     app3 = modifiedeuler_2nd(u3,u4,0,5,100,1,0)
-    app4 = midpoint_2nd(u3,u4,0,5,100,1,0)
+    app4 = newmark(.5, .1, 5, dummyzero, 0 , 5, 100, 1, 0)
+    app5 = newmark(.5, .1, 5, dummyzero, 0 , 5, 100, 1, 0, 1/6)
     plt.figure("Some Stable - DHM")
     plt.title("Damped Harmonic Motion; N=100")
     plt.xlabel('t')
@@ -129,7 +134,8 @@ def main():
     plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
     plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
+    plt.plot(app5[0],app5[1],color='green',label="Newmark - Linear")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("Some Stable Error - DHM")
@@ -139,15 +145,16 @@ def main():
     plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
-    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
+    plt.semilogy(app5[0],errorcalc(app5[1],exa1[1]),color='green',label="Newmark - Linear")
     plt.legend(loc='lower left')
     # All unstable damped harmonic motion
     exa1 = funceval(u3sol, 0, 5, 10)
     app1 = rk4sys(0,5,10,[1,0],[u3,u4])
     app2 = euler_2nd(u3,u4,0,5,10,1,0)
     app3 = modifiedeuler_2nd(u3,u4,0,5,10,1,0)
-    app4 = midpoint_2nd(u3,u4,0,5,10,1,0)
+    app4 = newmark(.5, .1, 5, dummyzero, 0 , 5, 10, 1, 0)
+    app5 = newmark(.5, .1, 5, dummyzero, 0 , 5, 10, 1, 0, 1/6)
     plt.figure("All Unstable - DHM")
     plt.title("Damped Harmonic Motion; N=10")
     plt.xlabel('t')
@@ -155,21 +162,39 @@ def main():
     plt.plot(app1[0],np.transpose(app1[1])[0],'b',label="RK4")
     plt.plot(app2[0],app2[1],color="orange",label="Euler")
     plt.plot(app3[0],app3[1],'r',label="Modified Euler")
-    plt.plot(app4[0],app4[1],color='pink',label="RK2")
+    plt.plot(app4[0],app4[1],color='black',label="Newmark")
+    plt.plot(app5[0],app5[1],color='green',label="Newmark - Linear")
     plt.plot(exa1[0],exa1[1],label="Exact Solution")
     plt.legend(loc='lower left')
     plt.figure("All Unstable Error - DHM")
     plt.title("Damped Harmonic Motion Error; N=10")
     plt.xlabel('t')
     plt.ylabel('Error')
-    plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4 ")
+    plt.semilogy(app1[0],errorcalc(np.transpose(app1[1])[0],exa1[1]),'b',label="RK4")
     plt.semilogy(app2[0],errorcalc(app2[1],exa1[1]),color="orange",label="Euler")
     plt.semilogy(app3[0],errorcalc(app3[1],exa1[1]),'r',label="Modified Euler")
-    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='pink',label="RK2")
-    plt.semilogy(exa1[0],errorcalc(exa1[1],exa1[1]),label="Exact Solution")
+    plt.semilogy(app4[0],errorcalc(app4[1],exa1[1]),color='black',label="Newmark")
+    plt.semilogy(app5[0],errorcalc(app5[1],exa1[1]),color='green',label="Newmark - Linear")
     plt.legend(loc='lower left')
     plt.show()
     return()
+
+def newmark(M,C,K,f,a,b,N,x0,v0,beta=(1/4),gamma=(1/2)):
+    h=(b-a)/N
+    a0=(f(a)-C*v0-K*x0)/M
+    t=[a+h*i for i in range(N+1)]
+    x=[x0 for i in range(N+1)]
+    v=[v0 for i in range(N+1)]
+    a=[a0 for i in range(N+1)]
+    A=M/(beta*h**2)+(gamma*C)/(beta*h)+K
+    for i in range(1,N+1):
+        x[i] = f(t[i]) \
+            + M*(x[i-1]/(beta*h**2)+v[i-1]/(beta*h)+(1/(2*beta)-1)*a[i-1]) \
+            + C*((gamma*x[i-1])/(beta*h)-v[i-1]*(1-(gamma/beta))-h*a[i-1]*(1-gamma/(2*beta)))
+        x[i] = x[i]/A
+        a[i] = (x[i]-x[i-1])/(beta*h**2)-v[i-1]/(beta*h)-(1/(2*beta)-1)*a[i-1]
+        v[i] = gamma*(x[i]-x[i-1])/(beta*h)+v[i-1]*(1-gamma/beta)+h*a[i-1]*(1-gamma/(2*beta))
+    return(t,x)
 
 def leapfrog(f,a,b,N,alpha,beta):
     h=(b-a)/N
@@ -234,34 +259,6 @@ def rk4sys(a,b,N,alpham,fjtu):
         ti.append(t)
         xi.append(w[:])
     return(ti,xi)
-
-
-#solves for Mx" + Cx' +Kx = f(t)
-def newmark(f,M,C,K,t_i,t_f,N,x_i, v_i,gamma, beta):
-    # M is the mass matrix, C is the damping matrix, K is the stiffness matrix
-    #x_i and v_i are initial condition vectors
-    # f is a column vector
-    h = (t_f - t_i)/N
-    
-    t = np.linspace(t_i, t_f,N + 1)
-    x = np.empty(len(x_i),N+1)
-    v = np.empty(len(v_i,N+1))
-    a = np.empty(len(v_i,N+1))
-    
-    x[:,0] = x_i
-    v[:,0] = v_i
-    a[:,0] = np.linalg.inv(M)*(f[:,0] - C*v[:,0] - K*x[:,0])
-    
-    A = M/(beta*h**2) + gamma*C/(beta*h) + K
-    invA = np.linalg.inv(A)
-    
-    for i in range(0,N):
-        B = f[:,i+1] + M * (x[:,i]/(beta*h**2) + v[:,i]/(beta*h) + (1/(2*beta) - 1)*a[:,i]) + C*(gamma*x[:,i]/(beta*h)-v[:,i]*(1-gamma/beta)-h*a[:,i]*(1-gamma/(2*beta)))
-        x[:,i+1] = invA * B
-        a[:,i+1] = (x[:,i+1]-x[:,i])/(beta*h**2) - v[:,i]/(beta*h)-(1/(2*beta) - 1)*a[:,i]
-        v[:,i+1] = v[:,i]+(1-gamma)*h*a[:,i]+gamma*h*a[:,i+1]
-        
-    return (t,x[:,N+1])
     
 def errorcalc(w,y):
     return([abs(w[i]-y[i]) for i in range(len(w))])
@@ -277,6 +274,12 @@ def u1(t,y1,y2):return(y2)
 def u2(t,y1,y2):return(-10*y1)
 def u1sol(t):return(math.cos(math.sqrt(10)*t))
 def u2sol(t):return(-math.sqrt(10)*math.sin(math.sqrt(10)*t))
+
+# This is to input a zero forcing function for newmark
+def dummyzero(t):return(0)
+
+# This is the forcing equation to demonstrate resonance
+def yeehaw(t):return(math.sin(math.sqrt(10)*t))
 
 # This is the equation governing Simple Harmonic Motion
 def xpp(x):return(-10*x)
