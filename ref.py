@@ -3,9 +3,35 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def main():
+    # Stability :)
+    d=.01
+    i=1j
+    x=np.arange(-3,3,d)
+    y=np.arange(-3,3,d)
+    X,Y=np.meshgrid(x,y)
+    Z=X+Y*i
+    Z1=abs(1+Z)
+    Z2=abs(1+Z+Z**2/2)
+    Z3=abs(1+Z+Z**2/2+Z**3/3+Z**4/24)
+    Z4=abs(1+2*Z)
+    Z5=abs(Z*math.sqrt(1/2))
+    plt.figure("Euler")
+    plt.contour(X,Y,Z1,[1])
+    plt.figure("Modified Euler")
+    plt.contour(X,Y,Z2,[1])
+    plt.figure("RK4")
+    plt.contour(X,Y,Z3,[1])
+    plt.figure("Leapfrog")
+    plt.contour(X,Y,Z4,[1])
+    plt.figure("Newmark")
+    plt.contour(X,Y,Z5,[1])
     # Resonance Example
-    app4 = newmark(.5, .1, 5, yeehaw, 0 , 5, 1000, 1, 0)
-    return
+    appres = newmark(.5, .1, 5, yeehaw, 0 , 30, 1000, 1, 0)
+    plt.figure("Resonance")
+    plt.title("Resonance- Newmark")
+    plt.xlabel('t')
+    plt.ylabel('x')
+    plt.plot(appres[0],appres[1],color='green',label="Newmark")
     # Simple Harmonic Motion
     # All stable simple harmonic motion
     exa1 = funceval(u1sol, 0, 5, 1000)
